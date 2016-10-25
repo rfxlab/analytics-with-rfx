@@ -1,8 +1,8 @@
 package pageview.stream.topology;
 
 import common.processor.LogTokenizing;
-import pageview.stream.processor.ParsingPlayViewLog;
-import pageview.stream.processor.ProcessingPlayViewLog;
+import pageview.stream.processor.ParsingPageViewLog;
+import pageview.stream.processor.ProcessingPageViewLog;
 import rfx.core.stream.topology.BaseTopology;
 import rfx.core.stream.topology.Pipeline;
 import rfx.core.stream.topology.PipelineTopology;
@@ -15,8 +15,8 @@ public class PageViewTopology extends PipelineTopology {
     	System.out.println("... buildTopology " + this.topologyName);    	
         return Pipeline.create(this)
         		.apply(LogTokenizing.class)				
-                .apply(ParsingPlayViewLog.class) 
-                .apply(ProcessingPlayViewLog.class)
+                .apply(ParsingPageViewLog.class) 
+                .apply(ProcessingPageViewLog.class)
                 .done();
     }
     
@@ -24,7 +24,7 @@ public class PageViewTopology extends PipelineTopology {
     public static void main(String[] args) {
     	LogUtil.setPrefixFileName(TOPIC);
 		int begin  = 0;
-		int end  = 3;		
+		int end  = 0;		
 		PipelineTopology topo = new PageViewTopology();
 		topo.initKafkaDataSeeders(TOPIC, begin, end).buildTopology().start();
 		Utils.sleep(2000);

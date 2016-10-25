@@ -1,15 +1,14 @@
 package pageview.stream.data;
 
+import common.utils.DeviceParserUtil;
 import rfx.core.util.CharPool;
 import rfx.core.util.StringPool;
 import rfx.core.util.StringUtil;
 
-import common.utils.DeviceParserUtil;
-
 public class LogData {
 
     protected int loggedTime;
-    protected int placement;
+    protected String metric;
     protected String uuid = "0";
     protected int deviceType = DeviceParserUtil.PC;
     protected String ip = "0";
@@ -24,10 +23,10 @@ public class LogData {
     protected String userAgent;
     protected String contextKeyword;
 
-    public LogData(int loggedTime, int placement, String uuid, String ip, int partitionId) {
+    public LogData(int loggedTime, String metric, String uuid, String ip, int partitionId) {
         super();
         this.loggedTime = loggedTime;
-        this.placement = placement;
+        this.metric = metric;
         this.uuid = uuid;
         this.ip = ip;
         this.partitionId = partitionId;
@@ -37,11 +36,9 @@ public class LogData {
         super();
     }
 
-    public void setPlacement(int placement) {
-        if (this.placement == 0) {
-            this.placement = placement;
-        }
-    }
+    public void setMetric(String metric) {
+		this.metric = metric;
+	}
 
     public String getCountry() {
         return country;
@@ -144,9 +141,9 @@ public class LogData {
         return uuid;
     }
 
-    public int getPlacement() {
-        return placement;
-    }
+    public String getMetric() {
+		return metric;
+	}
 
     public int getLoggedTime() {
         return loggedTime;
@@ -179,8 +176,8 @@ public class LogData {
         char tab = CharPool.TAB;
         s.append(this.loggedTime).append(tab);
 
-        // advertising data
-        s.append(this.placement).append(tab);
+    
+        s.append(this.metric).append(tab);
 
         // context logs
         s.append(this.ip).append(tab);

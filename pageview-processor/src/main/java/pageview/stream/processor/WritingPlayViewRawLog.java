@@ -20,7 +20,7 @@ public class WritingPlayViewRawLog extends StreamProcessor {
 
 	@Override
 	public void onReceive(Tuple inTuple) throws Exception {
-		LogData ld  = (LogData) inTuple.getValueByField(ParsingPlayViewLog.LOG_DATA);
+		LogData ld  = (LogData) inTuple.getValueByField(ParsingPageViewLog.LOG_DATA);
 		System.out.println("beacon "+ new Gson().toJson(ld));
 		
 		String url = ld.getUrl();

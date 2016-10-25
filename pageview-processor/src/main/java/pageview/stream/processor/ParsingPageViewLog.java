@@ -17,20 +17,19 @@ import rfx.core.stream.message.Values;
 import rfx.core.stream.model.DataFlowInfo;
 import rfx.core.stream.processor.HttpEventProcessor;
 import rfx.core.stream.topology.BaseTopology;
-import rfx.core.stream.util.HashUtil;
 import rfx.core.stream.util.ua.Client;
 import rfx.core.stream.util.ua.Parser;
 import rfx.core.util.DateTimeUtil;
 import rfx.core.util.LogUtil;
 import rfx.core.util.StringUtil;
 
-public class ParsingPlayViewLog extends StreamProcessor {
+public class ParsingPageViewLog extends StreamProcessor {
 
     public static final String LOG_DATA = "LogData";
     public static final String CXKW = "cxkw";
     static Fields outFields = new Fields(LOG_DATA);
 
-    protected ParsingPlayViewLog(DataFlowInfo dataFlowInfo, BaseTopology topology) {
+    protected ParsingPageViewLog(DataFlowInfo dataFlowInfo, BaseTopology topology) {
         super(dataFlowInfo, topology);
     }
 
@@ -43,6 +42,9 @@ public class ParsingPlayViewLog extends StreamProcessor {
             String ip = inputTuple.getStringByField(HttpEventProcessor.IP);
             String cookie = inputTuple.getStringByField(HttpEventProcessor.COOKIE);
             int partitionId = StringUtil.safeParseInt(inputTuple.getStringByField(HttpEventProcessor.PARTITION_ID));
+            
+            System.out.println(query);
+            
             if (StringUtil.isEmpty(query)) {
                 return;
             }
@@ -52,21 +54,10 @@ public class ParsingPlayViewLog extends StreamProcessor {
             String uuid = BeaconUtil.getParam(params, "uuid", "");
             String referrer = BeaconUtil.getParam(params, "referrer");
             String url = BeaconUtil.getParam(params, "url", BeaconUtil.extractRefererURL(cookie));
-            int placement = StringUtil.safeParseInt(BeaconUtil.getParam(params, "placement"));
-
-            if(placement > 200){
-                System.out.println("==> Query: " + query);
-                System.out.println("==> userAgent: " + userAgent);
-                if(StringUtil.isEmpty(uuid)){
-                    uuid = HashUtil.sha1(ip + userAgent + cookie);
-                }
-            }
-
+            String metric = BeaconUtil.getParam(params, "metric");
             String contextKeyword = BeaconUtil.getParam(params, "cxkw");
-            //contextKeyword = contextKeyword.replace("banner,", StringPool.BLANK);
-            //contextKeyword = contextKeyword.replace("banner", StringPool.BLANK).trim();
 
-            LogData o = new LogData(loggedTime, placement, uuid, ip, partitionId);
+            LogData o = new LogData(loggedTime, metric, uuid, ip, partitionId);
 
 //            System.out.println("==> "+query);
             IPResult ipResult = IP2LocationUtil.find(ip);
