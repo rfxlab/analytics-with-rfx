@@ -1,0 +1,111 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.8
+
+version = '1.0'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven {
+    	url = "https://oss.sonatype.org/content/repositories/snapshots"
+    }
+}
+
+dependencies {
+    compile (  		
+    	    'io.netty:netty-all:4.0.32.Final'    	    		    		 	
+  			,'io.vertx:vertx-core:2.1.6'
+			,'com.typesafe.akka:akka-actor_2.10:2.3.11'
+			,'com.google.code.gson:gson:2.4'    		
+			,'log4j:log4j:1.2.17'
+			,'org.jsoup:jsoup:1.8.3'					
+			,'org.apache.commons:commons-lang3:3.3.2'
+			,'commons-net:commons-net:3.3'    		
+			,'redis.clients:jedis:2.7.3'
+			,'org.apache.httpcomponents:httpclient:4.5.1'
+
+    		, fileTree(dir: 'lib', include: '**/*.jar')    		
+    		,'org.apache.kafka:kafka_2.10:0.8.2.1'    	
+    		,'com.google.guava:guava:19.0'
+    		,'org.databene:contiperf:2.3.4'
+    		,'com.google.javascript:closure-compiler:v20151015'
+    		,'com.github.jknack:handlebars:2.3.1'
+    		,'com.github.spullara.mustache.java:compiler:0.9.1'   
+    		    		    		
+    		,'org.mongodb:mongo-java-driver:3.3.0'
+            ,'org.mongodb.morphia:morphia:1.2.1'
+    		,'org.yaml:snakeyaml:1.14' 
+    		
+    		)
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+
+uploadArchives {
+    repositories {
+       flatDir {
+           dirs 'repos'
+       }
+    }
+}
+
+task listJars << {
+    configurations.compile.each { File file -> println file.name }
+}
+
+task printClasspathStringJars << {   
+    println getClasspathStringJars()
+}
+
+def getClasspathStringJars() {
+	def baseFolder = 'deps/'
+    def fileNames = []
+    configurations.compile.each { File file -> fileNames.add(baseFolder + file.name) }
+    
+    def classpath = fileNames.join(" ; ")    
+    return '. ; ' + classpath + ' ; '
+}
+
+
+// copy libs
+task CopyRuntimeLibs(type: Copy) {  
+  into "build/libs/deps"  
+  from configurations.compile  
+}
+
+// copy config
+task CopyConfigs(type: Copy) {  
+  into "build/libs/configs"  
+  from files('configs')
+}
+
+
+task TrackingLogServer(type: Jar) {	
+	dependsOn classes   
+    from(sourceSets.main.output) {
+        include "**"
+    }
+    version = '1.0'
+    baseName = 'tracking-server'
+    manifest {
+   		attributes ('Implementation-Title': 'HttpServer', 
+        			'Implementation-Version': version ,
+        			'Main-Class': 'rfx.track.server.TrackingLogHttpServer',
+        			'Class-Path' : getClasspathStringJars() 
+        			)
+	}
+}
+
+
+
+// deploy -server jar to  Remote Servers and restart all
+task DeployAndRestartAllServers(type: Exec) {    
+    commandLine 'sh', './shell-scripts/deploy--server.sh'
+}
+
+// just restart all servers
+task RestartAllServers(type: Exec) {    
+    commandLine 'sh', './shell-scripts/restart-all--servers.sh'
+}

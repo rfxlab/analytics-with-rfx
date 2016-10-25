@@ -1,0 +1,14 @@
+{
+	map : {	
+		dbAdsPlayReportConfigs : {
+			username : ""
+			,password : ""
+			,database : "demo"
+			,host : "127.0.0.1"				
+			,port : 27001
+			,dbdriver : "mongodb"
+			,dbdriverclasspath : "com.mongodb.MongoClient"
+			,enabled : true
+		}
+	}
+}
