@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<WorkerConfigs classpath="rfx.core.configs.WorkerConfigs" type="object" >
+	
+	<!-- the shell-script for start workers -->
+	<startWorkerScriptPath></startWorkerScriptPath>
+		
+	<!-- the allocated port for workers -->	
+	<allocatedWorkers type="list" ></allocatedWorkers>
+		
+	<!-- the custom configs for workers -->
+	<customConfigs type="map" >
+		<config name="fullIP2LocationPath">			
+			/home/trieu/projects/rfxlab/pageview-analytics-with-rfx/track-server/resources/geoip-data/IP2LOCATION-LITE-DB5.BIN
+		</config>		
+		<config name="baseRawLogPath">
+			/home/trieu/data/raw-logs
+		</config>
+		<config name="enableWriteRawLog">true</config>
+	</customConfigs>
+	
+	<!-- where the debug/info/error logs store -->
+	<debugLogPath>/home/trieu/data/logs</debugLogPath>
+		
+</WorkerConfigs>

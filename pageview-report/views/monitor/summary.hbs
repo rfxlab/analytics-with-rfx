@@ -1,0 +1,268 @@
+<style type="text/css">
+    .chart-div svg {
+        height: 420px;
+        background-color: #D8D8D8 !important;
+    }
+</style>
+
+<!-- Page Heading -->
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">
+            Real-time report in recent <span id="recent_hours"></span> hours
+            <small></small>
+        </h1>
+    </div>
+</div>
+
+<div class="row" id="dSummaryStats">
+
+    <div id="dPageviewTotal" class="col-lg-3 col-md-6" style="display: none">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-9 text-right">
+                        <div class="huge" id="cPageviewTotal">0</div>
+                        <div>PlayView</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="dImpressionTotal" class="col-lg-3 col-md-6" style="display: none">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-9 text-right">
+                        <div class="huge" id="cImpressionTotal"> 0</div>
+                        <div>Impression</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="dView100" class="col-lg-3 col-md-6" style="display: none">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-9 text-right">
+                        <div class="huge" id="cView100"></div>
+                        <div>Complete AdView</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="dClickTotal" class="col-lg-3 col-md-6" style="display: none">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-9 text-right">
+                        <div class="huge" id="cClickTotal"> 0</div>
+                        <div>Click</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="dCTR" class="col-lg-3 col-md-6" style="display: none">
+        <div class="panel panel-green">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-random fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge" id="cCTR">0</div>
+                        <div>CTR</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="dAdsPerPv" class="col-lg-3 col-md-6" style="display: none">
+        <div class="panel panel-green">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-11 text-right">
+                        <div class="huge" id="cAdsPerPv">0</div>
+                        <div>% Ad Per PlayView</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="dRateView100" class="col-lg-3 col-md-6" style="display: none">
+        <div class="panel panel-green">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-random fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge" id="cRateView100">0</div>
+                        <div>% Complete AdView</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="dAvgEngagedTime" class="col-lg-3 col-md-6" style="display: none">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-exchange fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge" id="cAvgEngagedTime">12</div>
+                        <div>Avg AdView Time(seconds)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="dUser" class="col-lg-3 col-md-6" style="display: none">
+        <div class="panel panel-red">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-users fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge" id="cUser">13</div>
+                        <div>User</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row ">
+    <div class="panel">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-xs-4">
+                    <select id="graphType" class="form-control" style="font-weight:bold">
+                        <option value="ImpressionVsClick">Impression VS Click</option>
+                        <option value="ImpressionVsPageview">Impression VS PlayView</option>
+                        <option value="ImpressionVsCompleteAdView">Impression VS CompleteView</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="chartImpVsPv" class="chart-div">
+    <svg></svg>
+</div>
+
+<div id="chartImpVsClick" class="chart-div">
+    <svg></svg>
+</div>
+
+<div id="chartImpVsView100" class="chart-div">
+    <svg></svg>
+</div>
+
+
+<script type="application/javascript">
+
+
+    function makeGraphImpressionVsPageview() {
+        d3.json("{{buildUrl '/monitor/summary/chartImpVsPv'}}", function (error, data) {
+            $('#recent_hours').html((new  Date().getHours()) + data[0].values.length);
+            nv.addGraph(function () {
+                var chart = makeLinePlusBarChart('chartImpVsPv', data);
+                $('#cImpressionTotal').html(formatNumber(data[0]['total']));
+                $('#cPageviewTotal').html(formatNumber(data[1]['total']));
+                var cAdsPerPv = (((data[1]['total'] * 100) / (data[0]['total'])).toFixed(2));
+                $('#cAdsPerPv').html(cAdsPerPv).show();
+
+                $('#dSummaryStats > div').hide();
+                $('.chart-div').hide();
+                $('#chartImpVsPv').show();
+
+                $('#dPageviewTotal').show();
+                $('#dImpressionTotal').show();
+                $('#dAdsPerPv').show();
+                return chart;
+            });
+        });
+    }
+
+    function makeGraphImpressionVsClick() {
+        d3.json("{{buildUrl '/monitor/summary/chartImpVsClick'}}", function (error, data) {
+            $('#recent_hours').html((new  Date().getHours()) + data[0].values.length);
+            nv.addGraph(function () {
+                var chart = makeLinePlusBarChart('chartImpVsClick', data);
+                $('#cImpressionTotal').html(formatNumber(data[0]['total']));
+                $('#cClickTotal').html(formatNumber(data[1]['total']));
+                ;
+                var cCTR = (((data[1]['total'] * 100) / (data[0]['total'])).toFixed(2));
+                $('#cCTR').html(cCTR);
+
+                $('#dSummaryStats > div').hide();
+                $('.chart-div').hide();
+                $('#chartImpVsClick').show();
+
+                $('#dImpressionTotal').show();
+                $('#dClickTotal').show();
+                $('#dCTR').show();
+                return chart;
+            });
+        });
+    }
+
+    function makeGraphImpressionVsCompleteAdView() {
+        d3.json("{{buildUrl '/monitor/summary/chartImpVsView100'}}", function (error, data) {
+            $('#recent_hours').html((new  Date().getHours()) + data[0].values.length);
+            nv.addGraph(function () {
+                var chart = makeLinePlusBarChart('chartImpVsView100', data);
+                $('#cImpressionTotal').html(formatNumber(data[0]['total']));
+                $('#cView100').html(formatNumber(data[1]['total']));
+                ;
+                var rate = (((data[1]['total'] * 100) / (data[0]['total'])).toFixed(2));
+                $('#cRateView100').html(rate);
+
+                $('#dSummaryStats > div').hide();
+                $('.chart-div').hide();
+                $('#chartImpVsView100').show();
+
+                $('#dImpressionTotal').show();
+                $('#dView100').show();
+                $('#dRateView100').show();
+                return chart;
+            });
+        });
+    }
+
+    var f = window['makeGraph{{graphName}}'];
+    if (f instanceof  Function) {
+        f.apply();
+    }
+    // makeGraphImpressionVsClick();
+
+   
+    ///////////////////////////////////////////////////////////////
+
+
+    $(function () {
+
+        $('#graphType').on('change', function () {
+            //alert( this.value ); // or $(this).val()
+            window.location = '//' + location.host + '/?graphName=' + this.value;
+        }).val('{{graphName}}');
+    });
+</script>

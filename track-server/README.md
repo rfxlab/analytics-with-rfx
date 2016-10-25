@@ -1,13 +1,9 @@
-AdsPlay - adsplay-track-and-delivery
+RFX - pageview-track
 ====================
 
 log tracking HTTP server
-
-
-http://support.brightcove.com/en/video-cloud/docs/building-blocks-vast-20-xml-code
-https://www.npmjs.com/package/vast-xml
 	
 Core Contributors:
 ====================
-	TrieuNT@fpt.com.vn
+	tantrieuf31@gmail.com
 	

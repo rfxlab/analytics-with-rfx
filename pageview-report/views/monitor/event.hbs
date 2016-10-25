@@ -1,0 +1,308 @@
+<div class="row" style="text-align: center">
+    <h1>
+        Real-time PageView Report
+        <button type="button" class="btn btn-success" onclick="location.reload()" >Refresh</button>
+    </h1>
+</div>
+
+<!-- Event Summary Statistics -->
+<div class="row" id="dSummaryStats" >
+
+    <div id="dPageviewTotal" class="col-lg-6 col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-12 text-right">
+                        <div class="huge" id="cPageviewTotal"> 0{{plvLive}}</div>
+                        <div style="font-weight: bolder" >Total PageView View</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="dImpressionTotal" class="col-lg-6 col-md-6">
+        <div class="panel panel-green">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-12 text-right">
+                        <div class="huge" id="cUniqueVisitorTotal"> 0{{imp}}</div>
+                        <div style="font-weight: bolder">Total Unique Visitor </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading"><i class="fa fa-fw fa-list"></i> <strong>PageView Referrer</strong></div>
+            <div class="panel-body">
+                <div >
+                    <p> From where user go to the landing page</p>
+                    <table class="table table-condensed">
+                        <thead>
+                        <tr>
+                            <th>Channel Name</th>
+                            <th>PageView</th>
+                            <th>Unique Visitor</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr>
+                            <td> <a href="https://fptplay.net/tigerremix2016" target="_blank"> FptPlay - Web version</a>  </td>
+                            <td>134,934</td>
+                            <td>89,457</td>
+                        </tr>
+                        <tr class="success">
+                            <td><b> Total </b></td>
+                            <td><b> 364,861 </b></td>
+                            <td><b> 251,126 </b></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Event Hourly Statistics -->
+<div class="row" style="display: none">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-fw"></i>
+                    <strong>Hourly Report: Data in 24 hours of January 2rd, 2016</strong></h3>
+            </div>
+            <div class="panel-body">
+                <div id="chart_hourly_pv" class="graph" style='height:250px;'>
+                    <svg></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="display: " >
+    <div class="col-lg-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><i class="fa fa-fw fa-list"></i> <strong>Unique Visitor</strong></div>
+            <div class="panel-body">
+                <select class="form-control" id="event" >
+                    <option value="fptplay.net">Tiger Remix 2016</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+var filterDate = new moment().format("YYYY-MM-DD");
+var now = moment();
+var currentDay = '2016-01-02';
+var currentDayHour = '2016-01-02-23';
+
+var previousDayHour = '2016-01-02-00';
+var previous20Day = '2015-12-24';
+
+var ChartContainer = function (element, chart, selector) {
+    this.element = element;
+    this.chart = chart;
+    this.selector = selector;
+};
+
+
+// Maintian an instance of the chart
+var hourlyPageviewChart = new ChartContainer('#chart_hourly_pv svg');
+var dailyPageviewChart = new ChartContainer('#chart_daily_pv svg');
+var hourlyUserChart = new ChartContainer('#chart_hourly_user svg');
+var dailyUserChart = new ChartContainer('#chart_daily_user svg');
+
+function loadEventData(site) {
+    var $event = $("#event");
+    if (site === "-1") {
+        $event.prop('disabled', true);
+    } else {
+        var hourlyUrl = "{{site.ssl_api_domain}}/api/sites/" + site + "/pv?type=hourly&begin=" + previousDayHour + "&end=" + currentDayHour;
+        var dailyUrl = "{{site.ssl_api_domain}}/api/sites/" + site + "/pv?type=daily&begin=" + previous20Day + "&end=" + currentDay;
+        drawLineChart(hourlyUrl, hourlyPageviewChart, buildPageviewData, updateXandYForHourlyChart);
+        drawLineChart(dailyUrl, dailyPageviewChart, buildPageviewData, updateXandYForDailyChart);
+
+
+    }
+}
+
+$("#site").change(function () {
+    var site = $(this).val();
+    loadEventData(site);
+});
+
+var loadGraphUniqueVisitor = function(site, event){
+    site = 'tgrm2016-pv';
+    if (site !== "-1" && event !== "-1")
+    {
+        //var hourlyUrl = "{{site.ssl_api_domain}}/api/sites/" + site + "/u?type=hourly&begin=" + previousDayHour + "&end=" + currentDayHour + "&event=" + event;
+        var dailyUrl = "{{site.ssl_api_domain}}/api/sites/" + site + "/u?type=daily&begin=" + previous20Day + "&end=" + currentDay + "&event=" + event;
+        //drawLineChart(hourlyUrl, hourlyUserChart, buildUserData, updateXandYForHourlyChart);
+        drawLineChart(dailyUrl, dailyUserChart, buildUserData, updateXandYForDailyChart);
+    }
+}
+
+$("#event").change(function () {
+    var site = $("#site").val();
+    var event = $(this).val();
+    loadGraphUniqueVisitor(site, event);
+});
+
+
+//format time for Chart
+var formatTime = function (x) {
+    return new moment(x).format("YYYY-MM-DD");
+};
+
+var drawLineChart = function (url, chartContainer, buildDataCallback, updateXandY) {
+    d3.json(url, function (error, data) {
+        var hourlyUserData = buildDataCallback(data);
+
+        if (chartContainer.selector == null) {
+            nv.addGraph(function () {
+                chartContainer.chart = nv.models.lineChart()
+                        .interpolate("cardinal")
+                        .useInteractiveGuideline(true).showLegend(true).showYAxis(true).showXAxis(true)
+                ;
+                updateXandY(chartContainer.chart, data);
+
+                chartContainer.selector = d3.select(chartContainer.element).datum(hourlyUserData);
+                chartContainer.selector.transition().duration(500).call(chartContainer.chart);
+
+                nv.utils.windowResize(chartContainer.chart.update);
+                return chartContainer.chart;
+            });
+        } else {
+            // Update the SVG with the new data and call chart
+            updateXandY(chartContainer.chart, data);
+            chartContainer.selector.datum(hourlyUserData).transition().duration(500).call(chartContainer.chart);
+            nv.utils.windowResize(chartContainer.chart.update);
+        }
+
+    });
+};
+
+var updateXandYForHourlyChart = function (chart, data) {
+    var timeArray = buildHourlyTimeArray(data);
+    var x = chart.xAxis;
+    x.tickValues(timeArray);
+    x.tickFormat(function (d) {
+        return new moment(d).format("HH:mm");
+    });
+    var y = chart.yAxis;
+    y.axisLabel('View');
+    y.tickFormat(d3.format(',r'));
+};
+
+var updateXandYForDailyChart = function (chart, data) {
+    var timeArray = buildTimeArray(data);
+    var x = chart.xAxis;
+    x.tickValues(timeArray);
+    x.tickFormat(formatTime);
+    var y = chart.yAxis;
+    y.axisLabel('View');
+    y.tickFormat(d3.format(',r'));
+};
+
+var buildPageviewData = function (data) {
+    var pvs = [];
+    data.forEach(function (d) {
+        pvs.push({x: d.t, y: d.c});
+    });
+    return [
+        {key: "View", color: '#7777ff', values: pvs}
+    ];
+};
+
+var buildUserData = function (data) {
+    var pvs = [];
+    data.forEach(function (d) {
+        pvs.push({x: d.t, y: d.c});
+    });
+    return [
+        {key: "Unique Visitor", color: '#7777ff', values: pvs}
+    ];
+};
+
+var buildImpressionAndTrueViewData = function (data) {
+    var impressions = [];
+    var trvs = [];
+    data.forEach(function (d) {
+        impressions.push({x: d.t, y: d.imp});
+        trvs.push({x: d.t, y: d.trv});
+    });
+    return [
+        {key: "Impression", color: '#ff7f0e', values: impressions}
+        ,
+        {key: "Completed View", color: '#2ca02c', values: trvs}
+    ];
+};
+
+var buildClickData = function (data) {
+    var clicks = [];
+    data.forEach(function (d) {
+        clicks.push({x: d.t, y: d.c});
+    });
+    return [
+        {key: "Click", color: '#7777ff', values: clicks}
+    ];
+};
+
+var buildReachData = function (data) {
+    var reachs = [];
+    data.forEach(function (d) {
+        reachs.push({x: d.t, y: d.reach});
+    });
+    return [
+        {key: "Reach", color: '#D64889', values: reachs}
+    ];
+};
+
+var buildHourlyTimeArray = function (data) {
+    var timeArray = [];
+    var i = 0;
+    data.forEach(function (d) {
+        if (i % 3 == 0) {
+            timeArray.push(d.t);
+        }
+        i++;
+    });
+    return timeArray;
+};
+
+var buildTimeArray = function (data) {
+    var timeArray = [];
+    var i = 0;
+    data.forEach(function (d) {
+        if (i % 2 == 0) {
+            timeArray.push(d.t);
+        }
+        i++
+    });
+    return timeArray;
+};
+
+$(document).ready(function () {
+    var defaultOption = $("#site").find('option[value="tgrm2016-plv"]');
+    defaultOption.attr('selected', 'selected');
+    loadEventData(defaultOption.val());
+    loadGraphUniqueVisitor(defaultOption.val(), 'fptplay.net');
+});
+</script>

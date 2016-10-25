@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<KafkaConfig classpath="rfx.core.stream.configs.KafkaTopologyConfig" type="list" >
+
+	<topic name="pageview" topology="pageview.stream.topology.PageViewTopology">
+		<brokers>127.0.0.1:9092</brokers>
+	</topic>
+</KafkaConfig>
+
