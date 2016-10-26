@@ -45,6 +45,7 @@ public class ParsingPageViewLog extends StreamProcessor {
             
             System.out.println(query);
             
+            
             if (StringUtil.isEmpty(query)) {
                 return;
             }
@@ -55,7 +56,7 @@ public class ParsingPageViewLog extends StreamProcessor {
             String referrer = BeaconUtil.getParam(params, "referrer");
             String url = BeaconUtil.getParam(params, "url", BeaconUtil.extractRefererURL(cookie));
             String metric = BeaconUtil.getParam(params, "metric");
-            String contextKeyword = BeaconUtil.getParam(params, "cxkw");
+            String contextKeyword = BeaconUtil.getParam(params, "keywords");
 
             LogData o = new LogData(loggedTime, metric, uuid, ip, partitionId);
 

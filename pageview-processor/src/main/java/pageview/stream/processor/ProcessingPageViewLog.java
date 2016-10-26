@@ -1,6 +1,7 @@
 package pageview.stream.processor;
 
 import common.utils.BatchLogWriter;
+import common.utils.RealtimeTrackingUtil;
 import pageview.stream.data.LogData;
 import rfx.core.stream.functor.StreamProcessor;
 import rfx.core.stream.message.Tuple;
@@ -26,8 +27,9 @@ public class ProcessingPageViewLog extends StreamProcessor {
     
 
     static void processLogData(LogData ld) {
-        String url = ld.getUrl();
+        //String url = ld.getUrl();
         String metric = ld.getMetric();
+        RealtimeTrackingUtil.updateKafkaLogEvent(ld.getLoggedTime(), metric);
         //TODO
     }
 }

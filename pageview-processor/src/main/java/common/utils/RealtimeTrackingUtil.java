@@ -42,9 +42,9 @@ public class RealtimeTrackingUtil {
 				String keyH = MONITOR_PREFIX+dateHourStr;
 				
 				Pipeline p = jedis.pipelined();				
-				p.hincrBy(keyD, "kk:"+event , 1L);
+				p.hincrBy(keyD, "pv:"+event , 1L);
 				p.expire(keyD, AFTER_4_DAYS);
-				p.hincrBy(keyH, "kk:"+event , 1L);
+				p.hincrBy(keyH, "pv:"+event , 1L);
 				p.expire(keyH, AFTER_2_DAYS);
 				p.sync();
 				return true;
