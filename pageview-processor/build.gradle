@@ -25,8 +25,7 @@ dependencies {
 			,'org.jsoup:jsoup:1.8.3'    		
 			,'org.apache.commons:commons-lang3:3.3.2'
 			,'commons-net:commons-net:3.3'			
-			,'org.apache.commons:commons-pool2:2.4.2'			    		
-			,'redis.clients:jedis:2.9.0'
+			,'org.apache.commons:commons-pool2:2.4.2'
 			,'org.apache.httpcomponents:httpclient:4.5'   		
     		, fileTree(dir: 'lib', include: '**/*.jar')
     		
@@ -34,7 +33,7 @@ dependencies {
     		,'commons-dbcp:commons-dbcp:1.4'
     		,'commons-io:commons-io:2.4'
     		,'org.apache.commons:commons-math3:3.4.1'    		
-    		,'org.apache.kafka:kafka_2.10:0.8.2.1'    	
+    		,'org.apache.kafka:kafka_2.10:0.8.2.2'    	
     		,'org.yaml:snakeyaml:1.14'
     		,'org.mongodb:mongo-java-driver:3.0.2'
     		,'org.twitter4j:twitter4j-core:4.0.2'
@@ -42,6 +41,7 @@ dependencies {
     		,'org.codehaus.groovy:groovy:2.3.9' 
     		
  			//data job and API
+ 			,'redis.clients:jedis:2.9.0'
 			,'org.mongodb:mongo-java-driver:3.3.0'
             ,'org.mongodb.morphia:morphia:1.2.1'
             
@@ -83,7 +83,7 @@ task CopyConfigs(type: Copy) {
   from files('configs')
 }
 
-task buildJarWorker(type: Jar) {	
+task BuildLogProcessingWorker(type: Jar) {	
 	dependsOn classes   
     from(sourceSets.main.output) {
         include "**"
@@ -91,15 +91,15 @@ task buildJarWorker(type: Jar) {
     version = '1.0'
     baseName = '-stream-worker'
     manifest {
-   		attributes ('Implementation-Title': 'AdProcessingWorker', 
+   		attributes ('Implementation-Title': 'LogProcessingWorker', 
         			'Implementation-Version': version ,
-        			'Main-Class': '.worker.AdProcessingWorker',
+        			'Main-Class': 'pageview.worker.LogProcessingWorker',
         			'Class-Path' : getClasspathStringJars() 
         			)
 	}
 }
 
-task buildJarScheduledJob(type: Jar) {	
+task BuildScheduledJobWorker(type: Jar) {	
 	dependsOn classes   
     from(sourceSets.main.output) {
         include "**"
@@ -109,7 +109,7 @@ task buildJarScheduledJob(type: Jar) {
     manifest {
    		attributes ('Implementation-Title': 'ScheduledJobWorker', 
         			'Implementation-Version': version ,
-        			'Main-Class': '.worker.ScheduledJobWorker',
+        			'Main-Class': 'pageview.worker.ScheduledJobWorker',
         			'Class-Path' : getClasspathStringJars() 
         			)
 	}

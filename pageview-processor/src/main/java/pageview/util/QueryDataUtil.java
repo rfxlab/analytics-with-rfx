@@ -8,7 +8,7 @@ import java.util.Map;
 import rfx.core.util.StringPool;
 import rfx.core.util.StringUtil;
 
-public class BeaconUtil {
+public class QueryDataUtil {
 
 	public static Map<String, List<String>> getQueryMap(String query) {
 		QueryStringDecoder decoder = new QueryStringDecoder("?" + query);
@@ -110,7 +110,7 @@ public class BeaconUtil {
 
 	public static int getViewToClick(Map<String, List<String>> params) {
 		try {
-			String freq = BeaconUtil.getParam(params, "freq", "1:1");
+			String freq = QueryDataUtil.getParam(params, "freq", "1:1");
 			String[] toks = freq.split(":");
 			if (toks.length == 2) {
 				return StringUtil.safeParseInt(toks[0], 1);

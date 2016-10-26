@@ -27,7 +27,7 @@ dependencies {
 			,'org.apache.httpcomponents:httpclient:4.5.1'
 
     		, fileTree(dir: 'lib', include: '**/*.jar')    		
-    		,'org.apache.kafka:kafka_2.10:0.8.2.1'    	
+    		,'org.apache.kafka:kafka_2.10:0.8.2.2'    	
     		,'com.google.guava:guava:19.0'
     		,'org.databene:contiperf:2.3.4'
     		,'com.google.javascript:closure-compiler:v20151015'

@@ -9,7 +9,7 @@ import com.ip2location.IPResult;
 import common.utils.DeviceParserUtil;
 import common.utils.IP2LocationUtil;
 import pageview.stream.data.LogData;
-import pageview.util.BeaconUtil;
+import pageview.util.QueryDataUtil;
 import rfx.core.stream.functor.StreamProcessor;
 import rfx.core.stream.message.Fields;
 import rfx.core.stream.message.Tuple;
@@ -51,12 +51,12 @@ public class ParsingPageViewLog extends StreamProcessor {
             }
             System.out.println("loggedTime " + DateTimeUtil.formatDateHourMinute(new Date(loggedTime * 1000l)));
             
-            Map<String, List<String>> params = BeaconUtil.getQueryMap(query);
-            String uuid = BeaconUtil.getParam(params, "uuid", "");
-            String referrer = BeaconUtil.getParam(params, "referrer");
-            String url = BeaconUtil.getParam(params, "url", BeaconUtil.extractRefererURL(cookie));
-            String metric = BeaconUtil.getParam(params, "metric");
-            String contextKeyword = BeaconUtil.getParam(params, "keywords");
+            Map<String, List<String>> params = QueryDataUtil.getQueryMap(query);
+            String uuid = QueryDataUtil.getParam(params, "uuid", "");
+            String referrer = QueryDataUtil.getParam(params, "referrer");
+            String url = QueryDataUtil.getParam(params, "url", QueryDataUtil.extractRefererURL(cookie));
+            String metric = QueryDataUtil.getParam(params, "metric");
+            String contextKeyword = QueryDataUtil.getParam(params, "keywords");
 
             LogData o = new LogData(loggedTime, metric, uuid, ip, partitionId);
 

@@ -1,5 +1,7 @@
 package pageview.worker;
 
+import common.processor.LogTokenizing;
+import common.utils.FileUtil;
 import rfx.core.stream.model.KafkaTaskDef;
 import rfx.core.stream.model.TaskDef;
 import rfx.core.stream.worker.StreamProcessingWorker;
@@ -7,11 +9,11 @@ import rfx.core.util.LogUtil;
 import rfx.core.util.StringUtil;
 import rfx.core.util.Utils;
 
-import common.processor.LogTokenizing;
+public class LogProcessingWorker extends StreamProcessingWorker {
 
-public class AdProcessingWorker extends StreamProcessingWorker {
+	private static final String DATA_KAFKA_OFFSET = "data/kafka-offset";
 
-	public AdProcessingWorker(String name) {		
+	public LogProcessingWorker(String name) {		
 		super(name);
 		System.out.println("StreamProcessingWorker name: " + name);
 	}
@@ -35,8 +37,9 @@ public class AdProcessingWorker extends StreamProcessingWorker {
 		int beginPartition = StringUtil.safeParseInt(args[3]);
 		int endPartition = StringUtil.safeParseInt(args[4]);
 				
+		FileUtil.checkAndCreateDirectories(DATA_KAFKA_OFFSET);
 		TaskDef taskDef = new KafkaTaskDef(topic , beginPartition, endPartition);		
-		new AdProcessingWorker("AdProcessingWorker:"+topic).setTaskDef(taskDef).start(host, port);		
+		new LogProcessingWorker(LogProcessingWorker.class.getName()+":"+topic).setTaskDef(taskDef).start(host, port);		
 		Utils.sleep(2000);
 	}
 }

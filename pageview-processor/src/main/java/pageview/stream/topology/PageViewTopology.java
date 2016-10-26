@@ -1,6 +1,7 @@
 package pageview.stream.topology;
 
 import common.processor.LogTokenizing;
+import common.utils.FileUtil;
 import pageview.stream.processor.ParsingPageViewLog;
 import pageview.stream.processor.ProcessingPageViewLog;
 import rfx.core.stream.topology.BaseTopology;
@@ -22,6 +23,7 @@ public class PageViewTopology extends PipelineTopology {
     
     private static final String TOPIC = "pageview";		
     public static void main(String[] args) {
+    	FileUtil.checkAndCreateDirectories("data/kafka-offset");
     	LogUtil.setPrefixFileName(TOPIC);
 		int begin  = 0;
 		int end  = 0;		
