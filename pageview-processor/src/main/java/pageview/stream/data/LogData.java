@@ -175,7 +175,6 @@ public class LogData {
         // event time
         char tab = CharPool.TAB;
         s.append(this.loggedTime).append(tab);
-
     
         s.append(this.metric).append(tab);
 

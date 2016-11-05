@@ -20,16 +20,25 @@ public class ProcessingPageViewLog extends StreamProcessor {
 
     @Override
     public void onReceive(Tuple inTuple) throws Exception {
-        LogData ld = (LogData) inTuple.getValueByField(ParsingPageViewLog.LOG_DATA);
-                
-        processLogData(ld);
+        LogData ld = (LogData) inTuple.getValueByField(ParsingPageViewLog.LOG_DATA);                
+        processRealtimeLogData(ld);
+        saveLogDataForBatchProcessing(ld);
     }
     
 
-    static void processLogData(LogData ld) {
-        //String url = ld.getUrl();
+    static void processRealtimeLogData(LogData ld) {        
         String metric = ld.getMetric();
         RealtimeTrackingUtil.updateKafkaLogEvent(ld.getLoggedTime(), metric);
-        //TODO
+        //TODO add more real-time metrics
+    }
+    
+    static void saveLogDataForBatchProcessing(LogData ld) {
+       String log = ld.toRawLogRecord();
+       //TODO save to storage
+       // Option 1: save to HDFS
+       // Option 2: PosgresSQL or MySQL
+       // Option 3: Apache Cassandra
+       // Option 4: Apache Phoenix
+       // Option 5: normal file 
     }
 }

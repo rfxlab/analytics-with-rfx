@@ -9,15 +9,13 @@ import server.http.util.KafkaLogHandlerUtil;
 
 public class TrackingLogHandler implements BaseHttpHandler {
 		
+	
 	public static final String REDIRECT_PREFIX = "/r/";
-	
-	
-	private static final String PONG = "PONG";
-	private static final String DATA = "data";
+	private static final String PONG = "PONG";	
 	private static final String FAVICON_ICO = "favicon.ico";
-	private static final String LOG_DATA = "pv";
+	private static final String LOG_DATA = "track";
 	private static final String PING = "ping";
-
+	private static final String KAFKA_TOPIC_KEY = "_pageview";
 
 	@Override
 	public void handle(HttpServerRequest req) {
@@ -32,7 +30,7 @@ public class TrackingLogHandler implements BaseHttpHandler {
 		
 		//common
 		if(uri.startsWith(LOG_DATA)){
-			KafkaLogHandlerUtil.logAndResponseImage1px(req, "_pageview");;
+			KafkaLogHandlerUtil.logAndResponseImage1px(req, KAFKA_TOPIC_KEY);;
 		} 
 		else if (uri.equalsIgnoreCase(FAVICON_ICO)) {
 			HttpTrackingUtil.trackingResponse(req);

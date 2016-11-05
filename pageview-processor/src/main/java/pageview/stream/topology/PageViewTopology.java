@@ -8,6 +8,7 @@ import rfx.core.stream.topology.BaseTopology;
 import rfx.core.stream.topology.Pipeline;
 import rfx.core.stream.topology.PipelineTopology;
 import rfx.core.util.LogUtil;
+import rfx.core.util.StringUtil;
 import rfx.core.util.Utils;
 
 public class PageViewTopology extends PipelineTopology {        
@@ -27,6 +28,12 @@ public class PageViewTopology extends PipelineTopology {
     	LogUtil.setPrefixFileName(TOPIC);
 		int begin  = 0;
 		int end  = 0;		
+		
+		if(args.length >= 2){
+			begin = StringUtil.safeParseInt(args[0]);
+			end = StringUtil.safeParseInt(args[1]);
+		}
+		
 		PipelineTopology topo = new PageViewTopology();
 		topo.initKafkaDataSeeders(TOPIC, begin, end).buildTopology().start();
 		Utils.sleep(2000);

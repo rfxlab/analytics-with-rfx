@@ -43,8 +43,8 @@ public class ParsingPageViewLog extends StreamProcessor {
             String cookie = inputTuple.getStringByField(HttpEventProcessor.COOKIE);
             int partitionId = StringUtil.safeParseInt(inputTuple.getStringByField(HttpEventProcessor.PARTITION_ID));
             
-            System.out.println(query);
             
+            System.out.println(query);
             
             if (StringUtil.isEmpty(query)) {
                 return;
@@ -57,39 +57,39 @@ public class ParsingPageViewLog extends StreamProcessor {
             String url = QueryDataUtil.getParam(params, "url", QueryDataUtil.extractRefererURL(cookie));
             String metric = QueryDataUtil.getParam(params, "metric");
             String contextKeyword = QueryDataUtil.getParam(params, "keywords");
+            //http://log.example.com/track?uuid=123&referrer=http://facebook.com&url=http://myexamplewebsite.com&metric=pageview&keywords=iPhone7
 
-            LogData o = new LogData(loggedTime, metric, uuid, ip, partitionId);
+            LogData log = new LogData(loggedTime, metric, uuid, ip, partitionId);
 
 //            System.out.println("==> "+query);
             IPResult ipResult = IP2LocationUtil.find(ip);
 
-            if (ipResult != null) {
-                //System.out.println(ip + " #### location "+ipResult.getCity());
+            if (ipResult != null) {                
                 long locationId = IP2LocationUtil.updateAndGetLocationId(loggedTime, ipResult);
-                o.setCity(ipResult.getCity());
-                o.setCountry(ipResult.getCountryLong());
-                o.setLocationId(locationId);
+                log.setCity(ipResult.getCity());
+                log.setCountry(ipResult.getCountryLong());
+                log.setLocationId(locationId);
             } else {
                 System.out.println(ip + " #### location NOT FOUND");
             }
-            o.setUrl(url);
-            o.setRefererUrl(referrer);
+            log.setUrl(url);
+            log.setRefererUrl(referrer);
 
             if(userAgent.contains("okhttp")){
-                o.setDeviceType(DeviceParserUtil.NATIVE_APP);
-                o.setDeviceName(DeviceParserUtil.DEVICE_ANDROID);
-                o.setDeviceOs(DeviceParserUtil.DEVICE_ANDROID);
+                log.setDeviceType(DeviceParserUtil.NATIVE_APP);
+                log.setDeviceName(DeviceParserUtil.DEVICE_ANDROID);
+                log.setDeviceOs(DeviceParserUtil.DEVICE_ANDROID);
             } else {
                 Client uaClient = Parser.load().parse(userAgent);
                 int deviceType = DeviceParserUtil.getDeviceType(uaClient);
-                o.setDeviceType(deviceType);
-                o.setDeviceName(uaClient.device.family);
-                o.setDeviceOs(uaClient.os.family);
+                log.setDeviceType(deviceType);
+                log.setDeviceName(uaClient.device.family);
+                log.setDeviceOs(uaClient.os.family);
             }
 
-            o.setUserAgent(userAgent);
-            o.setContextKeyword(contextKeyword);
-            this.emit(new Tuple(outFields, new Values(o)));
+            log.setUserAgent(userAgent);
+            log.setContextKeyword(contextKeyword);
+            this.emit(new Tuple(outFields, new Values(log)));
         } catch (IllegalArgumentException e) {
             LogUtil.e("ParsingPlayViewLog occurs", e.getMessage());
         } catch (Exception e) {

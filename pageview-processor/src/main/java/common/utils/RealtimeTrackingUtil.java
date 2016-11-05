@@ -14,9 +14,7 @@ public class RealtimeTrackingUtil {
 
 	private static final String MONITOR_PREFIX = "m:";
 	private static final String YYYY_MM_DD_HH = "yyyy-MM-dd-HH";
-	
-	
-		
+			
 	public static final String DATE_FORMAT_PATTERN = "yyyy-MM-dd";
 	public static final String DATE_HOUR_FORMAT_PATTERN = YYYY_MM_DD_HH;
 	public static final String DATE_HOUR_MINUTE_FORMAT_PATTERN = "yyyy-MM-dd-HH-mm";
@@ -42,9 +40,9 @@ public class RealtimeTrackingUtil {
 				String keyH = MONITOR_PREFIX+dateHourStr;
 				
 				Pipeline p = jedis.pipelined();				
-				p.hincrBy(keyD, "pv:"+event , 1L);
+				p.hincrBy(keyD, "e:"+event , 1L);
 				p.expire(keyD, AFTER_4_DAYS);
-				p.hincrBy(keyH, "pv:"+event , 1L);
+				p.hincrBy(keyH, "e:"+event , 1L);
 				p.expire(keyH, AFTER_2_DAYS);
 				p.sync();
 				return true;
@@ -75,9 +73,6 @@ public class RealtimeTrackingUtil {
 		}.execute();		
 		return commited;
 	}
-	
-	
-	
 
 }
 
