@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Tracking Step Counter</string>
+    <string name="action_settings">Settings</string>
+    <string name="facebook_app_id"></string>
+</resources>
