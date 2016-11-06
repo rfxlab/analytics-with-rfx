@@ -28,10 +28,10 @@ public class TrackingLogHandler implements BaseHttpHandler {
 		
 		System.out.println("URI: " + uri);
 		
-		//common
+		//write data to Kafka
 		if(uri.startsWith(LOG_DATA)){
 			KafkaLogHandlerUtil.logAndResponseImage1px(req, KAFKA_TOPIC_KEY);;
-		} 
+		}		
 		else if (uri.equalsIgnoreCase(FAVICON_ICO)) {
 			HttpTrackingUtil.trackingResponse(req);
 		}

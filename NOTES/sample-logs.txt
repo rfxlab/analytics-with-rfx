@@ -1,0 +1,29 @@
+14.169.208.250	1478410461	Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) coc_coc_browser/58.3.134 Chrome/52.3.2743.134 Safari/537.36	uuid=be548122dc5640cf88742d799e351414&referrer=http://facebook.com&url=http://myexamplewebsite.com&metric=pageview&keywords=iPhone7
+
+
+1) Pageview
+Key Information: product_id, video_id
+
+Endpoint: http://log.example.com/track?uuid=be548122dc5640cf88742d799e351414&referrer=http://facebook.com&url=http://myexamplewebsite.com&metric=pageview&product=3W004ELAA1RO22VNAMZ&video=_Ei7CMAkyn0
+
+Sample log:
+14.169.208.250	1478410461	Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) coc_coc_browser/58.3.134 Chrome/52.3.2743.134 Safari/537.36	uuid=be548122dc5640cf88742d799e351414&referrer=http://facebook.com&url=http://myexamplewebsite.com&metric=pageview&product=3W004ELAA1RO22VNAMZ&video=_Ei7CMAkyn0
+
+2) Click
+Key Information: product_id, video_id
+
+Endpoint: 
+http://log.example.com/track?uuid=be548122dc5640cf88742d799e351414&referrer=http://facebook.com&url=http://myexamplewebsite.com&metric=click&product=3W004ELAA1RO22VNAMZ&video=_Ei7CMAkyn0
+
+Sample log:
+14.169.208.250	1478410461	Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) coc_coc_browser/58.3.134 Chrome/52.3.2743.134 Safari/537.36	uuid=be548122dc5640cf88742d799e351414&referrer=http://facebook.com&url=http://myexamplewebsite.com&metric=click&product=3W004ELAA1RO22VNAMZ&video=_Ei7CMAkyn0
+
+
+3) Order
+Key Information: product_id, video_id, order_id, customer_id
+
+Endpoint: 
+http://log.example.com/track?uuid=be548122dc5640cf88742d799e351414&referrer=http://facebook.com&url=http://myexamplewebsite.com&metric=order&product=AP069ELAA1N845VNAMZ&video=DYW9LVURPcU&order=134&customer_id=30960
+
+Sample log:
+14.169.208.250	1478410461	Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) coc_coc_browser/58.3.134 Chrome/52.3.2743.134 Safari/537.36	uuid=be548122dc5640cf88742d799e351414&referrer=http://facebook.com&url=http://myexamplewebsite.com&metric=click&product=AP069ELAA1N845VNAMZ&video=DYW9LVURPcU&order=134&customer_id=30960
