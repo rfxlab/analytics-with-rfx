@@ -1,7 +1,7 @@
-AdsPlay - realtime-event-report
+Sample realtime-event-report
 ====================
 
-for real-time marketing campaign
+for real-time analytics
 
 Refer Links for the Graph Data Visualization:
 ====================
@@ -11,5 +11,5 @@ http://bl.ocks.org/dbuezas/9306799
 
 Core Contributors:
 ====================
-	TrieuNT@fpt.com.vn
+	tantrieuf31@gmail.com
 	
