@@ -56,7 +56,7 @@
                         <tbody>
 
                         <tr>
-                            <td> <a href="https://fptplay.net/tigerremix2016" target="_blank"> FptPlay - Web version</a>  </td>
+                            <td> <a href="https://Faceboook.com" target="_blank">  Faceboook</a>  </td>
                             <td>134,934</td>
                             <td>89,457</td>
                         </tr>
@@ -139,13 +139,12 @@ function loadEventData(site) {
         drawLineChart(hourlyUrl, hourlyPageviewChart, buildPageviewData, updateXandYForHourlyChart);
         drawLineChart(dailyUrl, dailyPageviewChart, buildPageviewData, updateXandYForDailyChart);
 
-
     }
 }
 
 $("#site").change(function () {
     var site = $(this).val();
-    loadEventData(site);
+    
 });
 
 var loadGraphUniqueVisitor = function(site, event){
@@ -302,7 +301,7 @@ var buildTimeArray = function (data) {
 $(document).ready(function () {
     var defaultOption = $("#site").find('option[value="tgrm2016-plv"]');
     defaultOption.attr('selected', 'selected');
-    loadEventData(defaultOption.val());
-    loadGraphUniqueVisitor(defaultOption.val(), 'fptplay.net');
+    //loadEventData(defaultOption.val());
+    //loadGraphUniqueVisitor(defaultOption.val(), 'fptplay.net');
 });
 </script>

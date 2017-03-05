@@ -9,10 +9,7 @@ var bodyParser = require('body-parser');    // pull information from HTML POST (
 var cookieParser = require('cookie-parser');// pull information from HTML cookies (express4)
 
 var siteConfigs = require('./configs/site.js');
-var dbConfig = require('./configs/database');
 
-//console.log(siteConfigs);
-//console.log(dbConfig.url);
 app.use(favicon(__dirname + '/public/css/images/favicon.ico'));
 app.use(require('express-promise')());
 app.use(express.static(__dirname + '/public'));
@@ -32,7 +29,6 @@ app.engine('hbs', expressHbs(hbsConfigs));
 app.set('view engine', 'hbs');
 //TODO enable cache for production only
 //app.enable('view cache');
-
 
 var users = require('./middlewares/users');
 app.use(users);

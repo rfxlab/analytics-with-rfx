@@ -7,7 +7,7 @@
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mc2ads/rfx/tree/master/rfx-report"
+    "url": "https://github.com/rfxlab/analytics-with-rfx"
   },
   "keywords": [
     "reactive marketing"
@@ -26,13 +26,9 @@
     "mem-shm": "*",
     "mkdirp": "~0.3.5",
     "moment": "*",
-    "mongo-fast-join": "*",
-    "mongodb": "~2.0",
-    "mongoose": "~3.8.8",
     "morgan": "~1.3.0",
     "multer": "^1.0.1",
     "node-cache": "~1.0.2",
-    "redis": "*",
     "request": "~2.48.0",
     "rx": "*",
     "serve-favicon": "~2.1.3",

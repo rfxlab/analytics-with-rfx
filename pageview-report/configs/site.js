@@ -3,5 +3,5 @@
  */
 
 module.exports = {
-    base_domain : 'http://demo-report.rfxlab.com'
+    base_domain : 'http://localhost:8282/'
 };
